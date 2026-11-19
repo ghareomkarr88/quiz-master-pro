@@ -1,0 +1,402 @@
+<!--
+	Project: Quiz Application
+	Author: Omkar R. Ghare
+	Designation: Front-End Web Developer
+	Email: ghareomkarr88@gmail.com
+
+	Copyright 2026 Omkar R. Ghare. All rights reserved.
+-->
+
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Premium Interactive Quiz Application with real-time scoring, performance analytics, multiple categories, and leaderboard tracking.">
+    <meta name="keywords" content="quiz, online quiz, interactive quiz, knowledge test, trivia">
+    <meta name="author" content="Omkar R. Ghare">
+    <meta name="robots" content="index, follow">
+    <meta property="og:title" content="Quiz Master Pro - Interactive Quiz Application">
+    <meta property="og:description" content="Test your knowledge with our premium quiz application featuring real-time scoring and performance analytics.">
+    <meta property="og:type" content="website">
+    <title>Quiz Master Pro | Interactive Quiz Application</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="no-scroll">
+    <!-- Animated Background -->
+    <div class="bg-animated" aria-hidden="true">
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+        <div class="bg-orb"></div>
+    </div>
+
+    <!-- Preloader -->
+    <div id="preloader" role="alert" aria-label="Loading application">
+        <div class="preloader-content">
+            <div class="preloader-logo">
+                <div class="preloader-cube">
+                    <div class="face-front"></div>
+                    <div class="face-back"></div>
+                    <div class="face-right"></div>
+                    <div class="face-left"></div>
+                    <div class="face-top"></div>
+                    <div class="face-bottom"></div>
+                </div>
+            </div>
+            <div class="preloader-text">Quiz Master Pro</div>
+            <div class="preloader-subtext">Preparing your experience...</div>
+            <div class="preloader-bar">
+                <div class="preloader-bar-fill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+    <!-- Confetti Container -->
+    <div class="confetti-container" id="confettiContainer" aria-hidden="true"></div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true">
+        <div class="modal">
+            <div class="modal-icon" id="modalIcon">⚠️</div>
+            <h3 id="modalTitle">Are you sure?</h3>
+            <p id="modalMessage">This action cannot be undone.</p>
+            <div class="btn-group">
+                <button class="btn btn-secondary" id="modalCancel" onclick="closeModal()">Cancel</button>
+                <button class="btn btn-primary" id="modalConfirm">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="header-inner">
+            <a href="#" class="logo" onclick="showSection('hero'); return false;" aria-label="Quiz Master Pro Home">
+                <div class="logo-icon">🧠</div>
+                <div class="logo-text">Quiz<span>Master</span></div>
+            </a>
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="#" class="nav-link active" data-section="hero" onclick="showSection('hero'); return false;">Home</a>
+                <a href="#" class="nav-link" data-section="categories" onclick="showSection('categories'); return false;">Quiz</a>
+                <a href="#" class="nav-link" data-section="leaderboard" onclick="showSection('leaderboard'); return false;">Leaderboard</a>
+            </nav>
+            <div class="header-actions">
+                <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode" title="Toggle Theme">
+                    <span id="themeIcon">🌙</span>
+                </button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn" onclick="toggleMobileMenu()" aria-label="Toggle mobile menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+        <div class="mobile-nav" id="mobileNav">
+            <a href="#" class="nav-link active" data-section="hero" onclick="showSection('hero'); toggleMobileMenu(); return false;">🏠 Home</a>
+            <a href="#" class="nav-link" data-section="categories" onclick="showSection('categories'); toggleMobileMenu(); return false;">📝 Start Quiz</a>
+            <a href="#" class="nav-link" data-section="leaderboard" onclick="showSection('leaderboard'); toggleMobileMenu(); return false;">🏆 Leaderboard</a>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+
+            <!-- SECTION 1: Hero -->
+            <section class="hero" id="heroSection">
+                <div class="hero-badge">
+                    <span class="hero-badge-dot">✨</span>
+                    <span>Free • No Sign Up Required</span>
+                </div>
+                <h1>
+                    Test Your Knowledge<br>
+                    <span class="gradient-text">Like Never Before</span>
+                </h1>
+                <p>Challenge yourself with our interactive quizzes across multiple categories. Track your progress, compete on the leaderboard, and become a Quiz Master!</p>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-lg" onclick="showSection('categories')">
+                        🚀 Start Quiz Now
+                    </button>
+                    <button class="btn btn-secondary btn-lg" onclick="showSection('leaderboard')">
+                        🏆 Leaderboard
+                    </button>
+                </div>
+                <div class="hero-stats">
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="totalQuestionsCount">50+</div>
+                        <div class="hero-stat-label">Questions</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">5</div>
+                        <div class="hero-stat-label">Categories</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value">3</div>
+                        <div class="hero-stat-label">Difficulty Levels</div>
+                    </div>
+                    <div class="hero-stat">
+                        <div class="hero-stat-value" id="totalPlayers">0</div>
+                        <div class="hero-stat-label">Players</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 2: Category Selection -->
+            <section class="categories section-hidden" id="categoriesSection">
+                <div class="section-header">
+                    <h2>📚 Choose Your Category</h2>
+                    <p>Select a topic to test your knowledge</p>
+                </div>
+                <div class="category-grid" id="categoryGrid"></div>
+                <div class="text-center mt-30">
+                    <button class="btn btn-primary btn-lg" id="categoryNextBtn" onclick="proceedToDifficulty()" disabled>
+                        Continue →
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 3: Difficulty Selection -->
+            <section class="difficulty-section section-hidden" id="difficultySection">
+                <div class="section-header">
+                    <h2>⚡ Select Difficulty</h2>
+                    <p>Choose your challenge level</p>
+                </div>
+                <div class="difficulty-options" id="difficultyOptions">
+                    <div class="difficulty-card easy" data-difficulty="easy" onclick="selectDifficulty('easy')">
+                        <div class="difficulty-icon">🌱</div>
+                        <div class="difficulty-name">Easy</div>
+                        <div class="difficulty-desc">Perfect for beginners</div>
+                        <div class="difficulty-stars">⭐</div>
+                    </div>
+                    <div class="difficulty-card medium" data-difficulty="medium" onclick="selectDifficulty('medium')">
+                        <div class="difficulty-icon">🔥</div>
+                        <div class="difficulty-name">Medium</div>
+                        <div class="difficulty-desc">A balanced challenge</div>
+                        <div class="difficulty-stars">⭐⭐</div>
+                    </div>
+                    <div class="difficulty-card hard" data-difficulty="hard" onclick="selectDifficulty('hard')">
+                        <div class="difficulty-icon">💀</div>
+                        <div class="difficulty-name">Hard</div>
+                        <div class="difficulty-desc">For true experts only</div>
+                        <div class="difficulty-stars">⭐⭐⭐</div>
+                    </div>
+                </div>
+                <div class="text-center mt-30 btn-group">
+                    <button class="btn btn-secondary" onclick="showSection('categories')">← Back</button>
+                    <button class="btn btn-primary btn-lg" id="difficultyNextBtn" onclick="proceedToUser()" disabled>
+                        Continue →
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 4: User Info -->
+            <section class="user-section section-hidden" id="userSection">
+                <div class="user-form">
+                    <div class="user-avatar float-animation">👤</div>
+                    <h2 style="font-family: var(--font-display); margin-bottom: 8px;">Almost Ready!</h2>
+                    <p style="color: var(--text-secondary); margin-bottom: 24px; font-size: 0.9rem;">Enter your name to begin the quiz</p>
+                    <div class="input-group">
+                        <label for="playerName">Your Name</label>
+                        <input type="text" id="playerName" placeholder="Enter your name..." maxlength="20" autocomplete="off">
+                    </div>
+                    <div class="quiz-summary" style="text-align:left; padding: 16px; background: var(--bg-tertiary); border-radius: var(--radius-md); margin-bottom: 24px; font-size: 0.85rem;">
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="color:var(--text-secondary);">Category:</span>
+                            <span style="font-weight:600;" id="summaryCategory">-</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+                            <span style="color:var(--text-secondary);">Difficulty:</span>
+                            <span style="font-weight:600;" id="summaryDifficulty">-</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between;">
+                            <span style="color:var(--text-secondary);">Questions:</span>
+                            <span style="font-weight:600;" id="summaryQuestions">-</span>
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-secondary" onclick="showSection('difficulty')">← Back</button>
+                        <button class="btn btn-primary btn-lg" onclick="startQuiz()" id="startQuizBtn">
+                            🎯 Start Quiz
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- SECTION 5: Active Quiz -->
+            <section class="quiz-section section-hidden" id="quizSection">
+                <div class="quiz-header">
+                    <div class="quiz-info">
+                        <div class="quiz-info-item">
+                            <div class="icon score-icon">🎯</div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-tertiary);">Score</div>
+                                <div class="quiz-info-value" id="currentScore">0</div>
+                            </div>
+                        </div>
+                        <div class="quiz-info-item">
+                            <div class="icon timer-icon">⏱️</div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-tertiary);">Timer</div>
+                                <div class="quiz-info-value" id="timerDisplay">30</div>
+                            </div>
+                        </div>
+                        <div class="quiz-info-item">
+                            <div class="icon question-icon">📝</div>
+                            <div>
+                                <div style="font-size:0.7rem; color:var(--text-tertiary);">Question</div>
+                                <div class="quiz-info-value"><span id="currentQ">1</span>/<span id="totalQ">10</span></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="streakContainer" style="display:none;">
+                        <span class="streak-badge">🔥 <span id="streakCount">0</span> Streak</span>
+                    </div>
+                </div>
+
+                <div class="progress-container">
+                    <div class="progress-info">
+                        <span id="progressText">Question 1 of 10</span>
+                        <span id="progressPercent">0%</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                    </div>
+                </div>
+
+                <div class="question-nav" id="questionNav"></div>
+
+                <div class="question-card" id="questionCard">
+                    <div class="question-number" id="questionLabel">Question 1</div>
+                    <h2 class="question-text" id="questionText">Loading question...</h2>
+                    <div class="options-grid" id="optionsGrid"></div>
+                </div>
+
+                <div class="quiz-actions">
+                    <button class="btn btn-secondary" onclick="prevQuestion()" id="prevBtn" disabled>
+                        ← Previous
+                    </button>
+                    <button class="btn btn-danger btn-sm" onclick="confirmQuit()">
+                        ✕ Quit Quiz
+                    </button>
+                    <button class="btn btn-primary" onclick="nextQuestion()" id="nextBtn">
+                        Next →
+                    </button>
+                </div>
+            </section>
+
+            <!-- SECTION 6: Results -->
+            <section class="results-section section-hidden" id="resultsSection">
+                <div class="results-hero">
+                    <div class="results-circle" id="resultsCircle">
+                        <svg viewBox="0 0 180 180">
+                            <circle class="bg-circle" cx="90" cy="90" r="84"></circle>
+                            <circle class="progress-circle" id="resultsProgress" cx="90" cy="90" r="84"></circle>
+                        </svg>
+                        <div class="results-percentage" id="resultsPercent">0%</div>
+                        <div class="results-label">Score</div>
+                    </div>
+                    <div class="results-grade" id="resultsGrade">Loading...</div>
+                    <div class="results-message" id="resultsMessage">Calculating your results...</div>
+                </div>
+
+                <div class="results-stats" id="resultsStats">
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">✅</div>
+                        <div class="result-stat-value" id="correctCount">0</div>
+                        <div class="result-stat-label">Correct</div>
+                    </div>
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">❌</div>
+                        <div class="result-stat-value" id="wrongCount">0</div>
+                        <div class="result-stat-label">Wrong</div>
+                    </div>
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">⏭️</div>
+                        <div class="result-stat-value" id="skippedCount">0</div>
+                        <div class="result-stat-label">Skipped</div>
+                    </div>
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">⏱️</div>
+                        <div class="result-stat-value" id="timeTaken">0s</div>
+                        <div class="result-stat-label">Time</div>
+                    </div>
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">🔥</div>
+                        <div class="result-stat-value" id="bestStreak">0</div>
+                        <div class="result-stat-label">Best Streak</div>
+                    </div>
+                    <div class="result-stat-card">
+                        <div class="result-stat-icon">💎</div>
+                        <div class="result-stat-value" id="totalPoints">0</div>
+                        <div class="result-stat-label">Points</div>
+                    </div>
+                </div>
+
+                <!-- Performance Chart -->
+                <div class="section-header">
+                    <h2>📊 Performance Breakdown</h2>
+                </div>
+                <div class="performance-chart" id="performanceChart"></div>
+
+                <div class="text-center mt-30 btn-group">
+                    <button class="btn btn-primary btn-lg" onclick="restartQuiz()">🔄 Play Again</button>
+                    <button class="btn btn-secondary" onclick="showSection('categories')">📚 New Category</button>
+                    <button class="btn btn-outline" onclick="showSection('leaderboard')">🏆 Leaderboard</button>
+                </div>
+
+                <!-- SECTION 7: Answer Review -->
+                <div class="review-section mt-30">
+                    <div class="section-header">
+                        <h2>📋 Answer Review</h2>
+                        <p>Review all your answers</p>
+                    </div>
+                    <div id="reviewContainer"></div>
+                </div>
+            </section>
+
+            <!-- SECTION 8: Leaderboard -->
+            <section class="leaderboard-section section-hidden" id="leaderboardSection">
+                <div class="section-header">
+                    <h2>🏆 Leaderboard</h2>
+                    <p>Top performers across all quizzes</p>
+                </div>
+                <div class="leaderboard-table">
+                    <div class="leaderboard-header">
+                        <div>Rank</div>
+                        <div>Player</div>
+                        <div>Score</div>
+                        <div>Time</div>
+                        <div>Category</div>
+                    </div>
+                    <div id="leaderboardBody"></div>
+                </div>
+                <div class="text-center mt-30 btn-group">
+                    <button class="btn btn-primary" onclick="showSection('categories')">🎮 Play Now</button>
+                    <button class="btn btn-danger btn-sm" onclick="confirmClearLeaderboard()">🗑️ Clear Scores</button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- SECTION 9: Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-text">
+                    Made with <span class="heart">❤️</span> by <strong>Omkar R. Ghare</strong> · © 2026
+                </div>
+                <div class="footer-links">
+                    <a href="#" class="footer-link" onclick="showSection('hero'); return false;">Home</a>
+                    <a href="#" class="footer-link" onclick="showSection('categories'); return false;">Quiz</a>
+                    <a href="#" class="footer-link" onclick="showSection('leaderboard'); return false;">Leaderboard</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
